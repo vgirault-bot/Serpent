@@ -36,8 +36,8 @@
     user-select: none;
     -webkit-user-select: none;
     overscroll-behavior: none;
-    touch-action: none;
   }
+  body { touch-action: none; }
 
   body::before {
     content: "";
@@ -59,162 +59,78 @@
     padding-bottom: var(--safe-bottom);
   }
 
-  /* ===== HEADER : score + titre ===== */
   .header {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
     padding: 10px 16px 6px;
     gap: 10px;
+    flex-shrink: 0;
   }
-
   .header-stat { display: flex; flex-direction: column; }
   .header-stat.right { text-align: right; align-items: flex-end; }
+  .stat-label { font-size: 11px; letter-spacing: 0.3em; color: var(--muted); text-transform: uppercase; }
+  .stat-value { font-size: 28px; color: var(--neon); text-shadow: 0 0 8px var(--neon-glow); line-height: 1; font-variant-numeric: tabular-nums; }
+  .title { font-family: 'Major Mono Display', monospace; font-size: 20px; letter-spacing: 0.4em; color: var(--neon); text-shadow: 0 0 6px var(--neon), 0 0 14px var(--neon-glow); margin-left: 0.4em; }
 
-  .stat-label {
-    font-size: 11px;
-    letter-spacing: 0.3em;
-    color: var(--muted);
-    text-transform: uppercase;
-  }
-
-  .stat-value {
-    font-size: 28px;
-    color: var(--neon);
-    text-shadow: 0 0 8px var(--neon-glow);
-    line-height: 1;
-    font-variant-numeric: tabular-nums;
-  }
-
-  .title {
-    font-family: 'Major Mono Display', monospace;
-    font-size: 20px;
-    letter-spacing: 0.4em;
-    color: var(--neon);
-    text-shadow: 0 0 6px var(--neon), 0 0 14px var(--neon-glow);
-    margin-left: 0.4em;
-  }
-
-  /* ===== ARÈNE ===== */
-  .arena-wrap {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 6px;
-    min-height: 0;
-  }
-
+  .arena-wrap { flex: 1 1 auto; display: flex; align-items: center; justify-content: center; padding: 6px; min-height: 0; }
   .arena {
     position: relative;
     border: 2px solid var(--neon);
-    box-shadow:
-      0 0 0 3px var(--bg),
-      0 0 20px var(--neon-glow),
-      inset 0 0 30px rgba(0,255,156,0.05);
+    box-shadow: 0 0 0 3px var(--bg), 0 0 20px var(--neon-glow), inset 0 0 30px rgba(0,255,156,0.05);
     background: var(--bg-grid);
     touch-action: none;
   }
-
   canvas { display: block; image-rendering: pixelated; touch-action: none; }
 
   .overlay {
-    position: absolute;
-    inset: 0;
+    position: absolute; inset: 0;
     display: none;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    flex-direction: column; align-items: center; justify-content: center;
     background: rgba(5,8,10,0.88);
     backdrop-filter: blur(4px);
-    text-align: center;
-    padding: 16px;
+    text-align: center; padding: 16px;
     z-index: 10;
+    pointer-events: none;
   }
-  .overlay.visible { display: flex; }
-
-  .overlay-title {
-    font-family: 'Major Mono Display', monospace;
-    font-size: 22px;
-    letter-spacing: 0.25em;
-    color: var(--neon);
-    text-shadow: 0 0 12px var(--neon-glow);
-    margin-bottom: 10px;
-    animation: pulse 1.6s ease-in-out infinite;
-  }
+  .overlay.visible { display: flex; pointer-events: auto; }
+  .overlay-title { font-family: 'Major Mono Display', monospace; font-size: 22px; letter-spacing: 0.25em; color: var(--neon); text-shadow: 0 0 12px var(--neon-glow); margin-bottom: 10px; animation: pulse 1.6s ease-in-out infinite; }
   .overlay.dead .overlay-title { color: var(--danger); text-shadow: 0 0 12px rgba(255,56,96,0.6); }
-
   .overlay-text { font-size: 16px; color: var(--text); margin-bottom: 4px; }
-  .overlay-hint {
-    font-size: 13px; color: var(--muted);
-    letter-spacing: 0.2em; text-transform: uppercase;
-    margin-top: 14px;
-    animation: blink 1s step-end infinite;
-  }
-
+  .overlay-hint { font-size: 13px; color: var(--muted); letter-spacing: 0.2em; text-transform: uppercase; margin-top: 14px; animation: blink 1s step-end infinite; }
   @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
   @keyframes blink { 50% { opacity: 0.3; } }
 
-  /* ===== CONTRÔLES ===== */
   .controls {
-    padding: 10px 16px 14px;
+    flex-shrink: 0;
+    padding: 8px 16px 14px;
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     gap: 14px;
     align-items: center;
   }
-
-  /* D-pad cross */
-  .dpad {
-    width: 168px;
-    height: 168px;
-    position: relative;
-    margin: 0 auto;
-    grid-column: 2;
-  }
-
+  .dpad { width: 168px; height: 168px; position: relative; margin: 0 auto; grid-column: 2; touch-action: none; }
   .dpad-btn {
     position: absolute;
     background: rgba(0,255,156,0.06);
     border: 1px solid var(--neon-dim);
     color: var(--neon);
     font-size: 28px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    width: 56px; height: 56px;
+    font-family: inherit;
+    touch-action: none;
     transition: background 0.08s, transform 0.08s;
-    width: 56px;
-    height: 56px;
   }
-  .dpad-btn:active {
-    background: rgba(0,255,156,0.25);
+  .dpad-btn.active, .dpad-btn:active {
+    background: rgba(0,255,156,0.3);
     box-shadow: inset 0 0 14px var(--neon-glow);
     transform: scale(0.95);
   }
-
-  .dpad-btn.up    { top: 0;   left: 56px; border-radius: 8px 8px 0 0; }
+  .dpad-btn.up    { top: 0;    left: 56px; border-radius: 8px 8px 0 0; }
   .dpad-btn.down  { bottom: 0; left: 56px; border-radius: 0 0 8px 8px; }
-  .dpad-btn.left  { top: 56px; left: 0;   border-radius: 8px 0 0 8px; }
-  .dpad-btn.right { top: 56px; right: 0;  border-radius: 0 8px 8px 0; }
-
-  .dpad-center {
-    position: absolute;
-    top: 56px; left: 56px;
-    width: 56px; height: 56px;
-    border: 1px solid var(--neon-dim);
-    background: rgba(0,255,156,0.04);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--neon);
-    font-size: 11px;
-    letter-spacing: 0.15em;
-    cursor: pointer;
-  }
-  .dpad-center:active {
-    background: rgba(0,255,156,0.18);
-  }
+  .dpad-btn.left  { top: 56px; left: 0;    border-radius: 8px 0 0 8px; }
+  .dpad-btn.right { top: 56px; right: 0;   border-radius: 0 8px 8px 0; }
 
   .side-btn {
     height: 56px;
@@ -225,34 +141,18 @@
     font-size: 16px;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.08s;
     width: 100%;
     border-radius: 8px;
+    touch-action: none;
+    transition: all 0.08s;
   }
-  .side-btn:active {
-    background: rgba(0,255,156,0.2);
+  .side-btn.active, .side-btn:active {
+    background: rgba(0,255,156,0.25);
     box-shadow: inset 0 0 14px var(--neon-glow);
   }
+  .side-btn-wrap { display: flex; flex-direction: column; gap: 8px; height: 168px; justify-content: center; }
+  .hint { text-align: center; font-size: 11px; color: var(--muted); letter-spacing: 0.25em; text-transform: uppercase; padding: 0 16px 4px; flex-shrink: 0; }
 
-  .side-btn-wrap {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    height: 168px;
-    justify-content: center;
-  }
-
-  .hint {
-    text-align: center;
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    padding: 0 16px 4px;
-  }
-
-  /* Petits écrans : compresser */
   @media (max-height: 700px) {
     .dpad { width: 144px; height: 144px; }
     .dpad-btn { width: 48px; height: 48px; font-size: 24px; }
@@ -260,9 +160,10 @@
     .dpad-btn.down { left: 48px; }
     .dpad-btn.left { top: 48px; }
     .dpad-btn.right { top: 48px; }
-    .dpad-center { top: 48px; left: 48px; width: 48px; height: 48px; font-size: 10px; }
     .side-btn-wrap { height: 144px; }
     .side-btn { height: 48px; }
+    .header { padding: 6px 16px 4px; }
+    .stat-value { font-size: 24px; }
   }
 </style>
 </head>
@@ -284,10 +185,10 @@
   <main class="arena-wrap">
     <div class="arena" id="arena">
       <canvas id="game"></canvas>
-      <div class="overlay visible" id="overlay">
-        <div class="overlay-title" id="overlayTitle">Prêt ?</div>
-        <div class="overlay-text" id="overlayText">Glisse pour bouger</div>
-        <div class="overlay-hint" id="overlayHint">Touche pour démarrer</div>
+      <div class="overlay" id="overlay">
+        <div class="overlay-title" id="overlayTitle">Pause</div>
+        <div class="overlay-text" id="overlayText">En attente</div>
+        <div class="overlay-hint" id="overlayHint">Touche pour reprendre</div>
       </div>
     </div>
   </main>
@@ -296,19 +197,16 @@
 
   <div class="controls">
     <div class="side-btn-wrap">
-      <button class="side-btn" id="pauseBtn">Pause</button>
+      <button class="side-btn" id="pauseBtn" type="button">Pause</button>
     </div>
-
     <div class="dpad">
-      <button class="dpad-btn up"    data-dir="up">▲</button>
-      <button class="dpad-btn down"  data-dir="down">▼</button>
-      <button class="dpad-btn left"  data-dir="left">◄</button>
-      <button class="dpad-btn right" data-dir="right">►</button>
-      <button class="dpad-center" id="centerBtn">GO</button>
+      <button class="dpad-btn up"    data-dir="up"    type="button">▲</button>
+      <button class="dpad-btn down"  data-dir="down"  type="button">▼</button>
+      <button class="dpad-btn left"  data-dir="left"  type="button">◄</button>
+      <button class="dpad-btn right" data-dir="right" type="button">►</button>
     </div>
-
     <div class="side-btn-wrap">
-      <button class="side-btn" id="restartBtn">Restart</button>
+      <button class="side-btn" id="restartBtn" type="button">Restart</button>
     </div>
   </div>
 </div>
@@ -323,17 +221,16 @@
   const overlayText = document.getElementById('overlayText');
   const overlayHint = document.getElementById('overlayHint');
 
-  // Dimensionne l'arène en fonction de l'espace dispo
   const COLS = 20;
   const ROWS = 20;
   let CELL = 18;
 
   function fitCanvas() {
     const wrap = document.querySelector('.arena-wrap');
-    const w = wrap.clientWidth - 12;
-    const h = wrap.clientHeight - 12;
+    const w = Math.max(wrap.clientWidth - 12, 100);
+    const h = Math.max(wrap.clientHeight - 12, 100);
     const size = Math.min(w, h);
-    CELL = Math.floor(size / COLS);
+    CELL = Math.max(8, Math.floor(size / COLS));
     canvas.width = COLS * CELL;
     canvas.height = ROWS * CELL;
     canvas.style.width = canvas.width + 'px';
@@ -341,12 +238,11 @@
     draw();
   }
 
-  // ===== ÉTAT =====
   const TICK_BASE = 130;
   const TICK_MIN = 70;
   const TICK_STEP = 3;
 
-  let snake, dir, nextDir, food, particles, score, best, tickInterval, alive, paused, started, lastTick;
+  let snake, dir, nextDir, food, particles, score, best, tickInterval, alive, paused, lastTick;
 
   try { best = parseInt(localStorage.getItem('snake_mobile_best') || '0', 10) || 0; } catch(e) { best = 0; }
   document.getElementById('best').textContent = best;
@@ -365,21 +261,17 @@
     particles = [];
     alive = true;
     paused = false;
-    started = false;
     tickInterval = TICK_BASE;
     placeFood();
     updateHUD();
-    showOverlay('Prêt ?', 'Glisse pour bouger', 'Touche pour démarrer', false);
+    hideOverlay();
     draw();
   }
 
   function placeFood() {
     while (true) {
       const f = { x: Math.floor(Math.random() * COLS), y: Math.floor(Math.random() * ROWS) };
-      if (!snake.some(s => s.x === f.x && s.y === f.y)) {
-        food = f;
-        return;
-      }
+      if (!snake.some(s => s.x === f.x && s.y === f.y)) { food = f; return; }
     }
   }
 
@@ -397,18 +289,13 @@
   }
   function hideOverlay() { overlay.classList.remove('visible'); }
 
-  // ===== TICK =====
   function tick() {
-    if (!alive || paused || !started) return;
-
+    if (!alive || paused) return;
     dir = nextDir;
     const head = { x: snake[snake.length - 1].x + dir.x, y: snake[snake.length - 1].y + dir.y };
-
     if (head.x < 0 || head.x >= COLS || head.y < 0 || head.y >= ROWS) return die();
     if (snake.some(s => s.x === head.x && s.y === head.y)) return die();
-
     snake.push(head);
-
     if (head.x === food.x && head.y === food.y) {
       score += 10;
       if (score > best) {
@@ -417,19 +304,14 @@
       }
       for (let i = 0; i < 12; i++) {
         particles.push({
-          x: (food.x + 0.5) * CELL,
-          y: (food.y + 0.5) * CELL,
-          vx: (Math.random() - 0.5) * 6,
-          vy: (Math.random() - 0.5) * 6,
-          life: 24, max: 24,
-          color: '255, 204, 0'
+          x: (food.x + 0.5) * CELL, y: (food.y + 0.5) * CELL,
+          vx: (Math.random() - 0.5) * 6, vy: (Math.random() - 0.5) * 6,
+          life: 24, max: 24, color: '255, 204, 0'
         });
       }
       placeFood();
       tickInterval = Math.max(TICK_MIN, tickInterval - TICK_STEP);
-
-      // Vibration douce iPhone (Safari récent)
-      if (navigator.vibrate) navigator.vibrate(15);
+      if (navigator.vibrate) try { navigator.vibrate(15); } catch(e) {}
     } else {
       snake.shift();
     }
@@ -438,60 +320,43 @@
 
   function die() {
     alive = false;
-    started = false;
     const head = snake[snake.length - 1];
     for (let i = 0; i < 30; i++) {
       particles.push({
-        x: (head.x + 0.5) * CELL,
-        y: (head.y + 0.5) * CELL,
-        vx: (Math.random() - 0.5) * 10,
-        vy: (Math.random() - 0.5) * 10,
-        life: 40, max: 40,
-        color: '255, 56, 96'
+        x: (head.x + 0.5) * CELL, y: (head.y + 0.5) * CELL,
+        vx: (Math.random() - 0.5) * 10, vy: (Math.random() - 0.5) * 10,
+        life: 40, max: 40, color: '255, 56, 96'
       });
     }
-    if (navigator.vibrate) navigator.vibrate([60, 40, 100]);
+    if (navigator.vibrate) try { navigator.vibrate([60, 40, 100]); } catch(e) {}
     showOverlay('Game Over', `Score : ${score}` + (score === best && score > 0 ? ' · Record !' : ''), 'Touche pour rejouer', true);
   }
 
-  // ===== RENDU =====
   function draw() {
     ctx.fillStyle = '#0a1014';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-
     ctx.strokeStyle = 'rgba(0,255,156,0.04)';
     ctx.lineWidth = 1;
     for (let x = 0; x <= COLS; x++) {
       ctx.beginPath();
-      ctx.moveTo(x * CELL + 0.5, 0);
-      ctx.lineTo(x * CELL + 0.5, canvas.height);
-      ctx.stroke();
+      ctx.moveTo(x * CELL + 0.5, 0); ctx.lineTo(x * CELL + 0.5, canvas.height); ctx.stroke();
     }
     for (let y = 0; y <= ROWS; y++) {
       ctx.beginPath();
-      ctx.moveTo(0, y * CELL + 0.5);
-      ctx.lineTo(canvas.width, y * CELL + 0.5);
-      ctx.stroke();
+      ctx.moveTo(0, y * CELL + 0.5); ctx.lineTo(canvas.width, y * CELL + 0.5); ctx.stroke();
     }
-
     if (food) {
       const t = performance.now() / 300;
       const pulse = 0.5 + Math.sin(t) * 0.15;
       const fx = (food.x + 0.5) * CELL;
       const fy = (food.y + 0.5) * CELL;
-      ctx.shadowBlur = 16;
-      ctx.shadowColor = '#ffcc00';
+      ctx.shadowBlur = 16; ctx.shadowColor = '#ffcc00';
       ctx.fillStyle = '#ffcc00';
-      ctx.beginPath();
-      ctx.arc(fx, fy, CELL * 0.35 + pulse * 2, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.beginPath(); ctx.arc(fx, fy, CELL * 0.35 + pulse * 2, 0, Math.PI * 2); ctx.fill();
       ctx.shadowBlur = 0;
       ctx.fillStyle = '#fff5a8';
-      ctx.beginPath();
-      ctx.arc(fx - 2, fy - 2, CELL * 0.12, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.beginPath(); ctx.arc(fx - 2, fy - 2, CELL * 0.12, 0, Math.PI * 2); ctx.fill();
     }
-
     if (snake) {
       const len = snake.length;
       for (let i = 0; i < len; i++) {
@@ -509,16 +374,12 @@
         const radius = isHead ? 5 : 3;
         roundRect(ctx, px + inset, py + inset, CELL - inset * 2, CELL - inset * 2, radius);
         ctx.fill();
-
         if (isHead) {
           ctx.shadowBlur = 0;
           ctx.fillStyle = '#05080a';
-          const cx = px + CELL / 2;
-          const cy = py + CELL / 2;
-          const ox = dir.x * 3;
-          const oy = dir.y * 3;
-          const perpX = -dir.y * 4;
-          const perpY = dir.x * 4;
+          const cx = px + CELL / 2, cy = py + CELL / 2;
+          const ox = dir.x * 3, oy = dir.y * 3;
+          const perpX = -dir.y * 4, perpY = dir.x * 4;
           ctx.beginPath();
           ctx.arc(cx + ox + perpX, cy + oy + perpY, 2, 0, Math.PI * 2);
           ctx.arc(cx + ox - perpX, cy + oy - perpY, 2, 0, Math.PI * 2);
@@ -527,12 +388,9 @@
       }
       ctx.shadowBlur = 0;
     }
-
     for (let i = particles.length - 1; i >= 0; i--) {
       const p = particles[i];
-      p.x += p.vx; p.y += p.vy;
-      p.vx *= 0.92; p.vy *= 0.92;
-      p.life--;
+      p.x += p.vx; p.y += p.vy; p.vx *= 0.92; p.vy *= 0.92; p.life--;
       const a = p.life / p.max;
       ctx.fillStyle = `rgba(${p.color}, ${a})`;
       ctx.fillRect(p.x - 1.5, p.y - 1.5, 3, 3);
@@ -554,117 +412,84 @@
     ctx.closePath();
   }
 
-  // ===== BOUCLE =====
   function loop(now) {
     if (!lastTick) lastTick = now;
-    if (now - lastTick >= tickInterval) {
-      tick();
-      lastTick = now;
-    }
+    if (now - lastTick >= tickInterval) { tick(); lastTick = now; }
     draw();
     requestAnimationFrame(loop);
   }
 
-  // ===== CONTRÔLES =====
   function setDir(d) {
     if (!alive) return;
-    if (d.x !== -dir.x || d.y !== -dir.y) {
-      nextDir = d;
-    }
-    if (!started) {
-      started = true;
-      hideOverlay();
-    }
+    if (d.x !== -dir.x || d.y !== -dir.y) nextDir = d;
   }
 
-  function togglePauseOrStart() {
-    if (!alive) {
-      reset();
-      started = true;
-      hideOverlay();
-      return;
-    }
-    if (!started) {
-      started = true;
-      hideOverlay();
-    } else {
-      paused = !paused;
-      if (paused) showOverlay('Pause', 'En attente', 'Touche pour reprendre');
-      else hideOverlay();
-    }
+  function togglePause() {
+    if (!alive) { reset(); return; }
+    paused = !paused;
+    if (paused) showOverlay('Pause', 'En attente', 'Touche pour reprendre');
+    else hideOverlay();
   }
 
-  // Swipes sur l'arène
   const SWIPE_THRESHOLD = 18;
   let tStartX = 0, tStartY = 0, tStartTime = 0, swiped = false;
 
   arena.addEventListener('touchstart', e => {
-    e.preventDefault();
+    if (e.cancelable) e.preventDefault();
     const t = e.touches[0];
-    tStartX = t.clientX;
-    tStartY = t.clientY;
+    tStartX = t.clientX; tStartY = t.clientY;
     tStartTime = Date.now();
     swiped = false;
   }, { passive: false });
 
   arena.addEventListener('touchmove', e => {
-    e.preventDefault();
+    if (e.cancelable) e.preventDefault();
     if (swiped) return;
     const t = e.touches[0];
-    const dx = t.clientX - tStartX;
-    const dy = t.clientY - tStartY;
+    const dx = t.clientX - tStartX, dy = t.clientY - tStartY;
     if (Math.abs(dx) > SWIPE_THRESHOLD || Math.abs(dy) > SWIPE_THRESHOLD) {
-      if (Math.abs(dx) > Math.abs(dy)) {
-        setDir({ x: dx > 0 ? 1 : -1, y: 0 });
-      } else {
-        setDir({ x: 0, y: dy > 0 ? 1 : -1 });
-      }
+      if (Math.abs(dx) > Math.abs(dy)) setDir({ x: dx > 0 ? 1 : -1, y: 0 });
+      else setDir({ x: 0, y: dy > 0 ? 1 : -1 });
       swiped = true;
     }
   }, { passive: false });
 
   arena.addEventListener('touchend', e => {
-    e.preventDefault();
+    if (e.cancelable) e.preventDefault();
     if (swiped) return;
     const dt = Date.now() - tStartTime;
-    if (dt < 300) {
-      togglePauseOrStart();
-    }
+    if (dt < 300) togglePause();
   }, { passive: false });
 
-  // D-pad
   const dirs = {
-    up:    { x: 0, y: -1 },
-    down:  { x: 0, y:  1 },
-    left:  { x: -1, y: 0 },
-    right: { x: 1, y:  0 },
+    up: { x: 0, y: -1 }, down: { x: 0, y: 1 },
+    left: { x: -1, y: 0 }, right: { x: 1, y: 0 },
   };
 
   document.querySelectorAll('.dpad-btn').forEach(btn => {
-    const handler = e => {
-      e.preventDefault();
+    const onDown = e => {
+      e.preventDefault(); e.stopPropagation();
+      btn.classList.add('active');
       setDir(dirs[btn.dataset.dir]);
     };
-    btn.addEventListener('touchstart', handler, { passive: false });
-    btn.addEventListener('mousedown', handler);
+    const onUp = () => btn.classList.remove('active');
+    btn.addEventListener('pointerdown', onDown);
+    btn.addEventListener('pointerup', onUp);
+    btn.addEventListener('pointercancel', onUp);
+    btn.addEventListener('pointerleave', onUp);
+    btn.addEventListener('touchstart', onDown, { passive: false });
+    btn.addEventListener('touchend', onUp);
   });
 
-  document.getElementById('centerBtn').addEventListener('click', e => {
-    e.preventDefault();
-    togglePauseOrStart();
-  });
+  function bindBtn(id, action) {
+    const b = document.getElementById(id);
+    const handler = e => { e.preventDefault(); e.stopPropagation(); action(); };
+    b.addEventListener('pointerdown', handler);
+    b.addEventListener('touchstart', handler, { passive: false });
+  }
+  bindBtn('pauseBtn', togglePause);
+  bindBtn('restartBtn', reset);
 
-  document.getElementById('pauseBtn').addEventListener('click', e => {
-    e.preventDefault();
-    togglePauseOrStart();
-  });
-
-  document.getElementById('restartBtn').addEventListener('click', e => {
-    e.preventDefault();
-    reset();
-  });
-
-  // Clavier (utile si testé sur PC)
   const keyMap = {
     'ArrowUp': dirs.up, 'KeyW': dirs.up, 'KeyZ': dirs.up,
     'ArrowDown': dirs.down, 'KeyS': dirs.down,
@@ -673,25 +498,30 @@
   };
   document.addEventListener('keydown', e => {
     if (keyMap[e.code]) { e.preventDefault(); setDir(keyMap[e.code]); }
-    if (e.code === 'Space') { e.preventDefault(); togglePauseOrStart(); }
+    if (e.code === 'Space') { e.preventDefault(); togglePause(); }
     if (e.code === 'KeyR') { e.preventDefault(); reset(); }
   });
 
-  // Empêcher zoom double-tap iOS
   let lastTouchEnd = 0;
   document.addEventListener('touchend', e => {
     const now = Date.now();
-    if (now - lastTouchEnd <= 300) e.preventDefault();
+    if (now - lastTouchEnd <= 300 && e.cancelable) e.preventDefault();
     lastTouchEnd = now;
   }, { passive: false });
-
-  // Empêcher gestes pinch zoom
   document.addEventListener('gesturestart', e => e.preventDefault());
 
-  // ===== START =====
+  if (window.ResizeObserver) {
+    const ro = new ResizeObserver(fitCanvas);
+    ro.observe(document.querySelector('.arena-wrap'));
+  }
   window.addEventListener('resize', fitCanvas);
-  window.addEventListener('orientationchange', () => setTimeout(fitCanvas, 100));
-  fitCanvas();
+  window.addEventListener('orientationchange', () => setTimeout(fitCanvas, 200));
+
+  requestAnimationFrame(() => {
+    fitCanvas();
+    requestAnimationFrame(fitCanvas);
+  });
+
   reset();
   requestAnimationFrame(loop);
 })();
